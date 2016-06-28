@@ -33,13 +33,22 @@ And some ^very fun^ legend files.
 ---end
 ```
 
-## Getting Started.
+## Installing
 Simply install the pageman with npm
 ```
 % npm install -g pageman
 ```
 
-now use
+## Usage
+If you specify any file it will build just the said files
 ```
-%  pageman yourFile.pm
+% pageman yourfile.pm something.pm
+```
+However you can also build the the whole directory by just typing
+```
+% pageman
+```
+And you can run a watching server with
+```
+% pageman -w
 ```
