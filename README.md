@@ -42,7 +42,7 @@ Simply install the pageman with npm
 ## Usage
 If you specify any file it will build just the said files
 ```
-% pageman yourfile.pm something.pm
+% pageman yourfile.kfml something.kfml
 ```
 However you can also build the the whole directory by just typing
 ```

@@ -15,6 +15,12 @@
     import path       = require('path');
 
 //
+// ─── CONSTS ─────────────────────────────────────────────────────────────────────
+//
+
+    const fileFormat = '.kfml';
+
+//
 // ─── MAIN ───────────────────────────────────────────────────────────────────────
 //
 
@@ -60,7 +66,7 @@
         console.log('Pageman Watch Server: Running.');
         let watcher = chokidar.watch( process.cwd( ) );
         watcher.on( 'change', path => {
-            if ( ( <string> path ).endsWith( '.pm' ) ) {
+            if ( ( <string> path ).endsWith( fileFormat ) ) {
                 loadCompileAndStoreFile( path );
             }
         });
@@ -86,7 +92,7 @@
                             operation( filePath );
                         });
                     } else {
-                        if ( address.endsWith( '.pm' ) ) {
+                        if ( address.endsWith( fileFormat ) ) {
                             operation( filePath );
                         }
                     }
@@ -104,10 +110,10 @@
      */
     function compileListOfFiles ( addresses: string[ ] ) {
         addresses.forEach( address => {
-            if ( address.endsWith('.pm') ) {
+            if ( address.endsWith( fileFormat ) ) {
                 loadCompileAndStoreFile( address );
             } else {
-                console.log('--> PME004: Supplied files must be of type ".pm".');
+                console.log(`--> PME004: Supplied files must be of type "${ fileFormat }".`);
             }
         });
     }
@@ -157,7 +163,7 @@
      * **yourFile.pm** `-->`** /somewhere/yourFile.html **
      */
     function getResultFileAddress( address: string ) {
-        return `${ address.substr( 0, address.length - 3 ) }.html`;
+        return `${ address.substr( 0, address.length - fileFormat.length ) }.html`;
     }
 
 // ────────────────────────────────────────────────────────────────────────────────
