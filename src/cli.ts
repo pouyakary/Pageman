@@ -9,13 +9,8 @@
 // ─── IMPORTS ────────────────────────────────────────────────────────────────────
 //
 
-    // core
     import pageman   = require('./pageman');
-
-    // third party
     import parseArgs = require('minimist');
-
-    // node
     import fs        = require('fs');
     import path      = require('path');
 
