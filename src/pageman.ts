@@ -75,17 +75,17 @@
             if ( !line.match( /^ *\/\/.*$/gi ) ) {
 
                 // starting markdown part
-                if ( line === '---md' ) {
+                if ( line.match( /^ *--- *(md|mdown|markdown) *$/i ) ) {
                     pushCleanReset( );
                     currentLanguage = language.Markdown;
 
                 // starting legend part
-                } else if ( line === '---legend' ) {
+                } else if ( line.match( /^ *--- *legend *$/i ) ) {
                     pushCleanReset( );
                     currentLanguage = language.Legend;
 
                 // ending part
-                } else if ( line === '---end' ) {
+                } else if ( line.match( /^ *--- *(e|end) *$/i ) ) {
                     pushCleanReset( );
 
                 // adding new lines to the part
