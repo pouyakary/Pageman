@@ -15,7 +15,7 @@
 //
 
     enum language {
-        HTML, Markdown, Legend
+        html, markdown, legend
     }
 
 //
@@ -53,7 +53,7 @@
     export function parseParts ( pageText: string ): part[ ] {
         // defs
         var result = new Array<part> ( );
-        var currentLanguage: language = language.HTML;
+        var currentLanguage: language = language.html;
         var currentValueLines = new Array<string>( );
 
         // functions
@@ -63,7 +63,7 @@
                     kind: currentLanguage,
                     value: currentValueLines.join('\n')
                 });
-                currentLanguage = language.HTML;
+                currentLanguage = language.html;
                 currentValueLines = [ ];
             }
         }
@@ -77,12 +77,12 @@
                 // starting markdown part
                 if ( line.match( /^ *--- *(md|mdown|markdown) *$/i ) ) {
                     pushCleanReset( );
-                    currentLanguage = language.Markdown;
+                    currentLanguage = language.markdown;
 
                 // starting legend part
                 } else if ( line.match( /^ *--- *legend *$/i ) ) {
                     pushCleanReset( );
-                    currentLanguage = language.Legend;
+                    currentLanguage = language.legend;
 
                 // ending part
                 } else if ( line.match( /^ *--- *(e|end) *$/i ) ) {
@@ -113,7 +113,7 @@
         let lines = new Array<string> ( );
         parts.forEach( part => {
             switch ( part.kind ) {
-                case language.Legend:
+                case language.legend:
                     let legendResult = legend.compile( part.value, currentLegendNumber );
                     if ( !resetLegendAtPart ) {
                         currentLegendNumber = legendResult.currentLegendNumber;
@@ -121,7 +121,7 @@
                     lines.push( legendResult.compiledSource );
                     break;
 
-                case language.Markdown:
+                case language.markdown:
                     lines.push( marked( part.value ) );
                     break;
 
