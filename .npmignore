@@ -1,0 +1,6 @@
+src/*
+.vscode/*
+typings/*
+.gitignore
+tsconfig.json
+node_modules
