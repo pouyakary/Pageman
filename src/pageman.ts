@@ -72,20 +72,20 @@
         pageText.split('\n').forEach( line => {
 
             // if not comment
-            if ( !line.match( /^ *\/\/.*$/gi ) ) {
+            if ( !line.match( /^\s*\/\/.*$/gi ) ) {
 
                 // starting markdown part
-                if ( line.match( /^ *--- *(md|mdown|markdown) *$/i ) ) {
+                if ( line.match( /^\s*---\s*(md|mdown|markdown)\s*$/i ) ) {
                     pushCleanReset( );
                     currentLanguage = language.markdown;
 
                 // starting legend part
-                } else if ( line.match( /^ *--- *legend *$/i ) ) {
+                } else if ( line.match( /^\s*---\s*legend\s*$/i ) ) {
                     pushCleanReset( );
                     currentLanguage = language.legend;
 
                 // ending part
-                } else if ( line.match( /^ *--- *(e|end) *$/i ) ) {
+                } else if ( line.match( /^\s*---\s*(e|end)\s*$/i ) ) {
                     pushCleanReset( );
 
                 // adding new lines to the part
