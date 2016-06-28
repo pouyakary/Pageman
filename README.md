@@ -39,5 +39,5 @@ Simply install the pageman with npm
 
 now use
 ```
-%  pageman youFile.pm
+%  pageman yourFile.pm
 ```
