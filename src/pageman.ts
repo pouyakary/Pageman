@@ -4,10 +4,17 @@
 //
 
 //
+// ─── INCLUDES ───────────────────────────────────────────────────────────────────
+//
+
+    import legend = require('./legend');
+    import marked = require('marked');
+
+//
 // ─── ENUMS ──────────────────────────────────────────────────────────────────────
 //
 
-    enum Language {
+    enum language {
         HTML, Markdown, Legend
     }
 
@@ -15,17 +22,25 @@
 // ─── INTERFACES ─────────────────────────────────────────────────────────────────
 //
 
-    interface Part {
-        Kind: Language;
-        Value: string;
+    interface part {
+        kind: language;
+        value: string;
     }
+
+//
+// ─── GLOBAL SETTINGS ────────────────────────────────────────────────────────────
+//
+
+    var currentLegendNumber = 1;
+    var resetLegendAtPart = false;
 
 //
 // ─── START ──────────────────────────────────────────────────────────────────────
 //
 
-    export function Compile ( pageText: string ) {
-
+    export function compile ( pageText: string ) {
+        let parsedParts = parseParts( pageText );
+        return compileParts( parsedParts );
     }
 
 //
@@ -35,11 +50,23 @@
     /**
      * Parses the text file and detects the ***language parts***.
      */
-    export function ParseParts ( pageText: string ): Array<Part> {
+    export function parseParts ( pageText: string ): part[ ] {
         // defs
-        var result = new Array<Part> ( );
-        var currentLanguage: Language = Language.HTML;
+        var result = new Array<part> ( );
+        var currentLanguage: language = language.HTML;
         var currentValueLines = new Array<string>( );
+
+        // functions
+        function pushCleanReset( ) {
+            if ( currentValueLines.length > 0 ) {
+                result.push({ 
+                    kind: currentLanguage,
+                    value: currentValueLines.join('\n')
+                });
+                currentLanguage = language.HTML;
+                currentValueLines = [ ];
+            }
+        }
 
         // body
         pageText.split('\n').forEach( line => {
@@ -49,19 +76,17 @@
 
                 // starting markdown part
                 if ( line === '---md' ) {
-                    currentLanguage = Language.Markdown;
+                    pushCleanReset( );
+                    currentLanguage = language.Markdown;
 
                 // starting legend part
                 } else if ( line === '---legend' ) {
-                    currentLanguage = Language.Legend;
+                    pushCleanReset( );
+                    currentLanguage = language.Legend;
 
                 // ending part
                 } else if ( line === '---end' ) {
-                    result.push({ 
-                        Kind: currentLanguage,
-                        Value: currentValueLines.join('\n')
-                    });
-                    currentLanguage = Language.HTML;
+                    pushCleanReset( );
 
                 // adding new lines to the part
                 } else {
@@ -71,13 +96,43 @@
         });
 
         // Adding last results
-        result.push({
-            Kind: currentLanguage,
-            Value: currentValueLines.join('\n')
-        });
+        pushCleanReset( );
 
         // done
         return result;
+    }
+
+//
+// ─── COMPILE PARTS ──────────────────────────────────────────────────────────────
+//
+
+    /** 
+     * Compiles different page parts
+     */
+    function compileParts( parts: part[ ] ): string {
+        let lines = new Array<string> ( );
+        parts.forEach( part => {
+            switch ( part.kind ) {
+                case language.Legend:
+                    let legendResult = legend.compile( part.value, currentLegendNumber );
+                    if ( !resetLegendAtPart ) {
+                        currentLegendNumber = legendResult.currentLegendNumber;
+                    }
+                    lines.push( legendResult.compiledSource );
+                    break;
+
+                case language.Markdown:
+                    lines.push( marked( part.value ) );
+                    break;
+
+                default:
+                    lines.push( part.value );
+                    break;
+            }
+        });
+
+        // and done...
+        return lines.join('\n');
     }
 
 // ────────────────────────────────────────────────────────────────────────────────
