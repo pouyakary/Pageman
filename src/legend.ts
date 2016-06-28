@@ -19,6 +19,11 @@
         legends: Array<string>
     }
 
+    interface legendCompiledResult {
+        compiledSource: string,
+        currentLegendNumber: number;
+    }
+
 //
 // ─── INCLUDES ───────────────────────────────────────────────────────────────────
 //
@@ -49,7 +54,7 @@
     /**
      * Compiles a legend string code into HTML
      */
-    export function compile ( code: string, startingIndex: number ): string {
+    export function compile ( code: string, startingIndex: number ): legendCompiledResult {
         // init
         resultParagraphs = Array<paragraphTableRow> ( );
         currentLegend = startingIndex;
@@ -63,14 +68,14 @@
         let renderedCode = renderParagraphTableRowArray( );
 
         // done
-        return completeHTML( renderedCode );
+        return { compiledSource: renderedCode, currentLegendNumber: currentLegend }
     }
 
 //
 // ─── LOADING RESOURCES ──────────────────────────────────────────────────────────
 //
 
-    function completeHTML( code: string ) {
+    export function completeHTML( code: string ) {
         return `<link rel="stylesheet" href="legend.css">\n${ code }`;
     }
 
@@ -142,7 +147,7 @@
 // ─── GET PARAGRAPHS ─────────────────────────────────────────────────────────────
 //
 
-    function getParagraphs( code: string ): Array<string> {
+    function getParagraphs( code: string ): string[ ] {
         return code.split('\n\n');
     }
 
