@@ -4,8 +4,6 @@
 //    Copyright 2016 by Pouya Kary <k@karyfoundation.org>
 //
 
-/// <reference path="marked.d.ts" />
-
 //
 // ──────────────────────────────────────────────── I ──────────
 //  :::::: M A I N : :  :   :    :     :        :          :
