@@ -49,12 +49,31 @@
                     }
                     // could open the file
                     let compiledSource = pageman.compile( data.toString( ) );
-                    console.log( compiledSource );
+                    // now saving the file...
+                    fs.writeFile( getResultFileAddress( address ), compiledSource, err => {
+                        if ( err ) {
+                            console.log(`--> PME003: Could not save result of "${ address }".`)
+                        } else {
+                            console.log(`--> Pageman: "${ address }" successfully compiled`);
+                        }
+                    });
                 });
             } else {
                 console.log(`--> PME001: File '${ address }' does not exists`);
             }
         });
+    }
+
+//
+// ─── GET SAVE FILE ADDRESS ──────────────────────────────────────────────────────
+//
+
+    /**
+     * Generates the final HTML address based on the 'pm' file address.
+     * **yourFile.pm** `-->`** /somewhere/yourFile.html **
+     */
+    function getResultFileAddress( address: string ) {
+        return `${ process.cwd( ) }/${ address.substr( 0, address.length - 3 ) }.html`;
     }
 
 // ────────────────────────────────────────────────────────────────────────────────
