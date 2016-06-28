@@ -1,0 +1,26 @@
+{
+  "name": "pageman",
+  "version": "0.0.1",
+  "description": "A preprocessor for Legend and Markdown that let's you mixup HTML, Markdown and Legend that is a friend to Jekyll",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "pageman": "bin/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karyfoundation/pageman"
+  },
+  "keywords": [
+    "pageman",
+    "kary",
+    "foundation",
+    "html",
+    "markdown",
+    "legend",
+    "jekyll"
+  ],
+  "author": "Kary Foundation",
+  "license": "GPL-3.0"
+}
