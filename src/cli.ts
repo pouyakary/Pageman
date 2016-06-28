@@ -9,10 +9,10 @@
 // ─── IMPORTS ────────────────────────────────────────────────────────────────────
 //
 
-    import pageman   = require('./pageman');
-    import parseArgs = require('minimist');
-    import fs        = require('fs');
-    import path      = require('path');
+    import pageman    = require('./pageman');
+    import chokidar   = require('chokidar');
+    import fs         = require('fs');
+    import path       = require('path');
 
 //
 // ─── MAIN ───────────────────────────────────────────────────────────────────────
@@ -21,23 +21,59 @@
     /** Where we start off */
     function main( ) { 
         // our arguments
-        let args = parseArgs( process.argv.slice( 2 ) );
-
+        let args = process.argv.slice( 2 );
         // command switching...
-        if ( args._.length === 0 ) {
-            operateOnEveryFileOnDir( process.cwd( ) );
+        if ( args.length > 0 ) {
+            if ( args[ 0 ] === '-w' ) {
+                watchDirectory( );
+            } else {
+                compileListOfFiles( args );
+            }
         } else {
-            compileListOfFiles( args._ );
+            compileDirectory( );
         }
     }
 
     main( );
 
 //
+// ─── COMPILE DIRECTORY ──────────────────────────────────────────────────────────
+//
+
+    /**
+     * Compiles every file within the directory and the sub directories....
+     */
+    function compileDirectory ( ) {
+        forEachFileInDirDo( process.cwd( ) , filepath => {
+            loadCompileAndStoreFile( filepath );
+        });
+    }
+
+//
+// ─── CHECK FOR WATCH MODE ───────────────────────────────────────────────────────
+//
+
+    /**
+     * Watches every file in the directory and the sub directories....
+     */
+    function watchDirectory ( ) {
+        console.log('Pageman Watch Server: Running.');
+        let watcher = chokidar.watch( process.cwd( ) );
+        watcher.on( 'change', path => {
+            if ( ( <string> path ).endsWith( '.pm' ) ) {
+                loadCompileAndStoreFile( path );
+            }
+        });
+    }
+
+//
 // ─── OPERATE ON EVERY FILE ON THE DIR... ────────────────────────────────────────
 //
 
-    function operateOnEveryFileOnDir( baseDir ) {
+    /** 
+     * Does a certain task to all the files within a directory and it's sub directories...
+     */
+    function forEachFileInDirDo( baseDir: string, operation: ( filepath: string ) => any ) {
         fs.readdir( baseDir , ( err , files ) => {
             if ( err ) {
                 console.log(`--> PME005: Could not open directory "${ baseDir }"`);
@@ -46,10 +82,12 @@
                 files.forEach( address => {
                     let filePath = path.join( baseDir , address );
                     if ( fs.statSync( filePath ).isDirectory( ) ) {
-                        operateOnEveryFileOnDir( filePath );
+                        forEachFileInDirDo( filePath , filePath => {
+                            operation( filePath );
+                        });
                     } else {
                         if ( address.endsWith( '.pm' ) ) {
-                            loadCompileAndStoreFile( filePath );
+                            operation( filePath );
                         }
                     }
                 });
@@ -89,9 +127,9 @@
                 // opening the file
                 fs.readFile( address, 'utf8', ( err, data ) => {
                     // if could not open the file
-                    if ( err ) { 
-                        console.log('--> PME002: Could not open the file.'); 
-                        return; 
+                    if ( err ) {
+                        console.log('--> PME002: Could not open the file.');
+                        return;
                     }
                     // could open the file
                     let compiledSource = pageman.compile( data.toString( ) );
