@@ -1,8 +1,10 @@
 
 # Pageman
-At Kary Foundation we use a very rich stack to build web. We use languages higher languages like TypeScript and Less. And templating via Jekyll. However when it comes to writing content it gets hard. We use Legend for side commenting and we really loved to have C family like comments so that we could have had Kary Comments to manage our files.
+At Kary Foundation we use a very rich stack to build web. We use higher languages like TypeScript and Less. And templating via Jekyll. However when it comes to writing content it gets hard. We use Markdown for normar content and Legend for side commenting.
 
-Pageman lets you mixup all these languages with kary comments. This is a file made possible with pageman technology:
+When it comes to having markdown, html and legend fixed together it really gets hard. Also HTML comments are horrible. As the foundation with most prestige on code management via commenting we need to have a C-family style of commenting so that we can bring Kary Comments into our document files.
+
+In order to have all the said factors we developed Pageman. A base that lets you mixup all these languages with kary comments. This is a file made possible with pageman's preprocess: 
 
 ```
 ---
