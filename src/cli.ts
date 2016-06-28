@@ -11,8 +11,10 @@
 
     // core
     import pageman   = require('./pageman');
+
     // third party
     import parseArgs = require('minimist');
+
     // node
     import fs        = require('fs');
     import path      = require('path');
@@ -47,12 +49,12 @@
                 return;
             } else {
                 files.forEach( address => {
-                    let filePath = path.join(  baseDir , address );
+                    let filePath = path.join( baseDir , address );
                     if ( fs.statSync( filePath ).isDirectory( ) ) {
                         operateOnEveryFileOnDir( filePath );
                     } else {
                         if ( address.endsWith( '.pm' ) ) {
-                            loadCompileAndStoreFile( address );
+                            loadCompileAndStoreFile( filePath );
                         }
                     }
                 });
@@ -86,11 +88,8 @@
      * some file name but of type '.html'
      */
     function loadCompileAndStoreFile( address: string ) {
-        // our file path
-        let filePath = path.join( process.cwd( ) , address );
-        console.log( filePath );
         // do we have the file?
-        fs.exists( filePath , exists => {
+        fs.exists( address , exists => {
             if ( exists ) {
                 // opening the file
                 fs.readFile( address, 'utf8', ( err, data ) => {
@@ -125,7 +124,7 @@
      * **yourFile.pm** `-->`** /somewhere/yourFile.html **
      */
     function getResultFileAddress( address: string ) {
-        return `${ process.cwd( ) }/${ address.substr( 0, address.length - 3 ) }.html`;
+        return `${ address.substr( 0, address.length - 3 ) }.html`;
     }
 
 // ────────────────────────────────────────────────────────────────────────────────
