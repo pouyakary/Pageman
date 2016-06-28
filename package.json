@@ -25,7 +25,6 @@
   "license": "GPL-3.0",
   "dependencies": {
     "chokidar": "^1.6.0",
-    "marked": "^0.3.5",
-    "minimist": "^1.2.0"
+    "marked": "^0.3.5"
   }
 }
