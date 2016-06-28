@@ -1,6 +1,6 @@
 {
   "name": "pageman",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A preprocessor for Legend and Markdown that let's you mixup HTML, Markdown and Legend that is a friend to Jekyll",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
