@@ -64,7 +64,9 @@
      */
     function watchDirectory ( ) {
         console.log('Pageman Watch Server: Running.');
-        let watcher = chokidar.watch( process.cwd( ) );
+        let watcher = chokidar.watch( process.cwd( ) , {
+            ignored: /.*(\.git|node_modules|_site).*/gi
+        });
         watcher.on( 'change', compileWatchFile );
         watcher.on( 'add', path => watcher.add( path ) );
     }
