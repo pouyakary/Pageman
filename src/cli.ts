@@ -26,11 +26,39 @@
         // our arguments
         let args = parseArgs( process.argv.slice( 2 ) );
 
-        // compiling files
-        compileListOfFiles( args._ );
+        // command switching...
+        if ( args._.length === 0 ) {
+            operateOnEveryFileOnDir( process.cwd( ) );
+        } else {
+            compileListOfFiles( args._ );
+        }
     }
 
     main( );
+
+//
+// ─── OPERATE ON EVERY FILE ON THE DIR... ────────────────────────────────────────
+//
+
+    function operateOnEveryFileOnDir( baseDir ) {
+        fs.readdir( baseDir , ( err , files ) => {
+            if ( err ) {
+                console.log(`--> PME005: Could not open directory "${ baseDir }"`);
+                return;
+            } else {
+                files.forEach( address => {
+                    let filePath = path.join(  baseDir , address );
+                    if ( fs.statSync( filePath ).isDirectory( ) ) {
+                        operateOnEveryFileOnDir( filePath );
+                    } else {
+                        if ( address.endsWith( '.pm' ) ) {
+                            loadCompileAndStoreFile( address );
+                        }
+                    }
+                });
+            }
+        })
+    }
 
 //
 // ─── COMPILE LIST OF FILES ──────────────────────────────────────────────────────
@@ -59,7 +87,8 @@
      */
     function loadCompileAndStoreFile( address: string ) {
         // our file path
-        let filePath = path.join( __dirname , address );
+        let filePath = path.join( process.cwd( ) , address );
+        console.log( filePath );
         // do we have the file?
         fs.exists( filePath , exists => {
             if ( exists ) {
