@@ -65,11 +65,19 @@
     function watchDirectory ( ) {
         console.log('Pageman Watch Server: Running.');
         let watcher = chokidar.watch( process.cwd( ) );
-        watcher.on( 'change', path => {
-            if ( ( <string> path ).endsWith( fileFormat ) ) {
-                loadCompileAndStoreFile( path );
-            }
-        });
+        watcher.on( 'change', compileWatchFile );
+        watcher.on( 'add', path => watcher.add( path ) );
+    }
+
+//
+// ─── COMPILE WATCH FILE ─────────────────────────────────────────────────────────
+//
+
+    function compileWatchFile( address: string ) {
+        if ( address.endsWith( fileFormat ) ) {
+            console.log(`Change at ${ new Date( ).toUTCString( ) }.`);
+            loadCompileAndStoreFile( address );
+        }
     }
 
 //
