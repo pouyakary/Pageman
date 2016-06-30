@@ -52,3 +52,6 @@ And you can run a watching server with
 ```
 % pageman -w
 ```
+
+## Configuration
+If you're using legend commentings in your website please make sure you have [these CSS](https://gist.github.com/pmkary/c5c13553ea36ba06df86acc4cc6217cf) classes defined.
