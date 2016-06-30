@@ -115,11 +115,11 @@
             legendContent = legendContent.substring( 3, legendContent.length - 5 );
             // adding it...
             result.legends.push(
-                 `<div class="legend-bullet" id="${ id }">${ currentLegend }. ${ legendContent }</div>`
+                 `<div class="legend-bullet" id="${ id }">${ currentLegend } &bull; ${ legendContent }</div>`
             );
 
             //returning the id
-            return `<sup class="legend-sup"><a href="#${ id }">${ currentLegend++ }</a></sup>`;
+            return `<sup class="legend-sup"><a href="#${ id }">&dagger;${ currentLegend++ }</a></sup>`;
         });
 
         // compiling markdown
