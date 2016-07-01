@@ -114,7 +114,9 @@
         parts.forEach( part => {
             switch ( part.kind ) {
                 case language.legend:
-                    let legendResult = legend.compile( part.value, currentLegendNumber );
+                    let legendResult = legend.compile( part.value, { 
+                        startingIndex: currentLegendNumber
+                    });
                     if ( !resetLegendAtPart ) {
                         currentLegendNumber = legendResult.currentLegendNumber;
                     }
