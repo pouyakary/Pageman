@@ -33,6 +33,7 @@
 
     var currentLegendNumber = 1;
     var resetLegendAtPart = false;
+    var legendNoLinking = false;
 
 //
 // ─── START ──────────────────────────────────────────────────────────────────────
@@ -115,7 +116,8 @@
             switch ( part.kind ) {
                 case language.legend:
                     let legendResult = legend.compile( part.value, { 
-                        startingIndex: currentLegendNumber
+                        startingIndex: currentLegendNumber,
+                        noLinking: legendNoLinking
                     });
                     if ( !resetLegendAtPart ) {
                         currentLegendNumber = legendResult.currentLegendNumber;
