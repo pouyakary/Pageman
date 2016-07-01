@@ -27,6 +27,10 @@
         value: string;
     }
 
+    interface pagemanOptions {
+        legendNoLinking?: boolean;
+    }
+
 //
 // ─── GLOBAL SETTINGS ────────────────────────────────────────────────────────────
 //
@@ -39,7 +43,10 @@
 // ─── START ──────────────────────────────────────────────────────────────────────
 //
 
-    export function compile ( pageText: string ) {
+    export function compile ( pageText: string , options: pagemanOptions ) { 
+        if ( options.legendNoLinking != undefined ) {
+            legendNoLinking = options.legendNoLinking;
+        }
         let parsedParts = parseParts( pageText );
         return compileParts( parsedParts );
     }
@@ -107,7 +114,7 @@
 // ─── COMPILE PARTS ──────────────────────────────────────────────────────────────
 //
 
-    /** 
+    /**
      * Compiles different page parts
      */
     function compileParts( parts: part[ ] ): string {
@@ -115,7 +122,7 @@
         parts.forEach( part => {
             switch ( part.kind ) {
                 case language.legend:
-                    let legendResult = legend.compile( part.value, { 
+                    let legendResult = legend.compile( part.value, {
                         startingIndex: currentLegendNumber,
                         noLinking: legendNoLinking
                     });
