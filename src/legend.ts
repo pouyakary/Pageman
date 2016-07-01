@@ -24,6 +24,11 @@
         currentLegendNumber: number;
     }
 
+    interface legendOptions {
+        startingIndex?: number;
+        noLinking?: boolean;
+    }
+
 //
 // ─── INCLUDES ───────────────────────────────────────────────────────────────────
 //
@@ -36,6 +41,7 @@
 
     var resultParagraphs = new Array<paragraphTableRow> ( );
     var currentLegend: number = 1;
+    var noLinking = false;
     var ids = { };
 
 //
@@ -54,10 +60,15 @@
     /**
      * Compiles a legend string code into HTML
      */
-    export function compile ( code: string, startingIndex: number ): legendCompiledResult {
+    export function compile ( code: string, options: legendOptions ): legendCompiledResult {
         // init
         resultParagraphs = Array<paragraphTableRow> ( );
-        currentLegend = startingIndex;
+        if ( options.startingIndex != undefined ) {
+            currentLegend = options.startingIndex;
+        }
+        if ( options.noLinking != undefined ) {
+            noLinking = options.noLinking;
+        }
 
         // compile
         getParagraphs( code ).forEach( paragraph => {
