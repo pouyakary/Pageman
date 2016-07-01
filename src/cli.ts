@@ -21,6 +21,12 @@
     const fileFormat = '.kfml';
 
 //
+// ─── COMMAND LINE ARGS ──────────────────────────────────────────────────────────
+//
+
+    var legendNoLinking = false;
+
+//
 // ─── MAIN ───────────────────────────────────────────────────────────────────────
 //
 
@@ -28,6 +34,14 @@
     function main( ) { 
         // our arguments
         let args = process.argv.slice( 2 );
+
+        // parsing options
+        let argIndexOfLegendNoLinking = args.indexOf('--legend-no-linking');
+        if ( argIndexOfLegendNoLinking > -1 ) {
+            args[ argIndexOfLegendNoLinking ].slice( argIndexOfLegendNoLinking , 1 );
+            legendNoLinking = true;
+        }
+
         // command switching...
         if ( args.length > 0 ) {
             if ( args[ 0 ] === '-w' ) {
@@ -148,7 +162,9 @@
                         return;
                     }
                     // could open the file
-                    let compiledSource = pageman.compile( data.toString( ) );
+                    let compiledSource = pageman.compile( data.toString( ) , {
+                        legendNoLinking: legendNoLinking
+                    });
                     // now saving the file...
                     fs.writeFile( getResultFileAddress( address ), compiledSource, err => {
                         if ( err ) {
