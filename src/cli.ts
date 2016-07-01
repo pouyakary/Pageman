@@ -27,6 +27,20 @@
     var legendNoLinking = false;
 
 //
+// ─── BASE LANGUAGE EXTENSIONS ───────────────────────────────────────────────────
+//
+
+    Array.prototype['contains'] = function( obj ) {
+        var index = this.length;
+        while ( index-- ) {
+            if ( this[ index ] === obj ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+//
 // ─── MAIN ───────────────────────────────────────────────────────────────────────
 //
 
@@ -36,11 +50,12 @@
         let args = process.argv.slice( 2 );
 
         // parsing options
-        let argIndexOfLegendNoLinking = args.indexOf('--legend-no-linking');
-        if ( argIndexOfLegendNoLinking > -1 ) {
-            args[ argIndexOfLegendNoLinking ].slice( argIndexOfLegendNoLinking , 1 );
+        if ( args['contains']( '--legend-no-linking' ) ) {
+            args = args.slice( args.indexOf( '--legend-no-linking' ) , 1 );
             legendNoLinking = true;
         }
+
+        console.log( args );
 
         // command switching...
         if ( args.length > 0 ) {
