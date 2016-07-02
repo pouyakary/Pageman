@@ -30,7 +30,11 @@
 // ─── BASE LANGUAGE EXTENSIONS ───────────────────────────────────────────────────
 //
 
-    Array.prototype['contains'] = function( obj ) {
+    /**
+     * Adds a function to the Array to search over a specified
+     * content in the array te check if it exists.
+     */
+    Array.prototype[ 'contains' ] = obj => {
         var index = this.length;
         while ( index-- ) {
             if ( this[ index ] === obj ) {
