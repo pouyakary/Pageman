@@ -130,7 +130,13 @@
             );
 
             //returning the id
-            return `<sup class="legend-sup"><a href="#${ id }">&dagger;${ currentLegend++ }</a></sup>`;
+            let insiderTextOrLink: string;
+            if ( !noLinking ) {
+                insiderTextOrLink = `<a href="#${ id }">&dagger;${ currentLegend++ }</a>`;
+            } else {
+                insiderTextOrLink = ( currentLegend++ ).toString( );
+            }
+            return `<sup class="legend-sup">${ insiderTextOrLink }</sup>`;
         });
 
         // compiling markdown
