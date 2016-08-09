@@ -58,6 +58,9 @@
         // our arguments
         let args = process.argv.slice( 2 );
 
+        // hello world
+        ui.printTitle('Pageman');
+
         // parsing options
         if ( args['contains']( commandNoLegendLinking ) ) {
             args = args.slice( args.indexOf( commandNoLegendLinking ) , 1 );
@@ -126,7 +129,7 @@
      * Does a certain task to all the files within a directory and it's sub directories...
      */
     function forEachFileInDirDo ( baseDir: string,
-                               operation: ( filepath: string ) => any ) {
+                                  operation: ( filepath: string ) => any ) {
         fs.readdir( baseDir , ( err , files ) => {
             if ( err ) {
                 ui.print( `Could not open directory "${ baseDir.underline }"`, false );
