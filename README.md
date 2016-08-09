@@ -1,6 +1,8 @@
 
 # Pageman
 
+<img width="898" alt="screen shot 2016-08-09 at 4 23 08 pm" src="https://cloud.githubusercontent.com/assets/2157285/17515488/f1a3bd6e-5e4d-11e6-85c9-ba82dc7086d7.png">
+
 At Kary Foundation we use a very rich stack to build web. We use higher languages like TypeScript and Less. And templating via Jekyll. However when it comes to writing content it gets hard. We use Markdown for normal content and Legend for side commenting.
 
 When it comes to having markdown, html and legend fixed together it really gets hard. Also HTML comments are horrible. As the foundation with most prestige on code management via commenting we need to have a C-family style of commenting so that we can bring Kary Comments into our document files.
