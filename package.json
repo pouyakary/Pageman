@@ -1,6 +1,6 @@
 {
   "name": "pageman",
-  "version": "1.0.8",
+  "version": "1.2.0",
   "description": "A preprocessor for Legend and Markdown that let's you mixup HTML, Markdown and Legend that is a friend to Jekyll",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,7 +25,8 @@
   "license": "GPL-3.0",
   "dependencies": {
     "chokidar": "^1.6.0",
+    "colors": "*",
     "marked": "^0.3.5",
-    "colors": "*"
+    "window-size": "^0.2.0"
   }
 }
