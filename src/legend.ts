@@ -126,13 +126,15 @@
             legendContent = legendContent.substring( 3, legendContent.length - 5 );
             // adding it...
             result.legends.push(
-                 `<div class="legend-bullet" id="${ id }">${ currentLegend } &bull; ${ legendContent }</div>`
+                 //`<div class="legend-bullet" id="${ id }">${ currentLegend } &bull; ${ legendContent }</div>`
+                 `<div class="legend-bullet">${ currentLegend } &bull; ${ legendContent }</div>`
             );
 
             //returning the id
             let insiderTextOrLink: string;
             if ( !noLinking ) {
-                insiderTextOrLink = `<a href="#${ id }">&dagger;${ currentLegend++ }</a>`;
+                // insiderTextOrLink = `<a href="#${ id }">&dagger;${ currentLegend++ }</a>`;
+                insiderTextOrLink = `&dagger;${ currentLegend++ }`;
             } else {
                 insiderTextOrLink = ( currentLegend++ ).toString( );
             }
