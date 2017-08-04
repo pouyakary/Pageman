@@ -11,38 +11,42 @@
 //
 
 //
+// ─── INCLUDES ───────────────────────────────────────────────────────────────────
+//
+
+    import * as marked from 'marked'
+
+//
 // ─── DECELERATIONS ──────────────────────────────────────────────────────────────
 //
 
     interface paragraphTableRow {
-        paragraph: string,
+        paragraph: string
         legends: Array<string>
     }
 
     interface legendCompiledResult {
-        compiledSource: string,
-        currentLegendNumber: number;
+        compiledSource: string
+        currentLegendNumber: number
     }
 
     interface legendOptions {
-        startingIndex?: number;
-        noLinking?: boolean;
+        startingIndex?: number
+        noLinking?: boolean
     }
 
-//
-// ─── INCLUDES ───────────────────────────────────────────────────────────────────
-//
-
-    import marked = require('marked');
+    interface legendIdTable {
+        [ key: string ]: boolean
+    }
 
 //
 // ─── GLOBAL STORAGE ─────────────────────────────────────────────────────────────
 //
 
-    var resultParagraphs = new Array<paragraphTableRow> ( );
-    var currentLegend: number = 1;
-    var noLinking = false;
-    var ids = { };
+    var resultParagraphs = new Array<paragraphTableRow> ( )
+    var currentLegend: number = 1
+    var noLinking = false
+    var ids: legendIdTable = { }
 
 //
 // ─── CONSTANTS ──────────────────────────────────────────────────────────────────
@@ -51,7 +55,7 @@
     /**
      * The grammar fo the legend 
      */
-    let legendGrammar = /\^([^\^])+\^/gi;
+    const legendGrammar = /\^([^\^])+\^/gi
 
 //
 // ─── COMPILE ────────────────────────────────────────────────────────────────────
@@ -60,34 +64,36 @@
     /**
      * Compiles a legend string code into HTML
      */
-    export function compile ( code: string, options: legendOptions ): legendCompiledResult {
+    export function compile ( code: string,
+                           options: legendOptions ): legendCompiledResult {
         // init
-        resultParagraphs = Array<paragraphTableRow> ( );
-        if ( options.startingIndex != undefined ) {
-            currentLegend = options.startingIndex;
-        }
-        if ( options.noLinking != undefined ) {
-            noLinking = options.noLinking;
-        }
+        resultParagraphs = new Array<paragraphTableRow> ( )
+        if ( options.startingIndex != undefined )
+            currentLegend = options.startingIndex
+
+        if ( options.noLinking != undefined )
+            noLinking = options.noLinking
 
         // compile
-        getParagraphs( code ).forEach( paragraph => {
-            resultParagraphs.push( compileParagraph( paragraph ) );
-        });
+        for ( const paragraph of getParagraphs( code ) )
+            resultParagraphs.push( compileParagraph( paragraph ) )
 
         // render 
-        let renderedCode = renderParagraphTableRowArray( );
+        let renderedCode = renderParagraphTableRowArray( )
 
         // done
-        return { compiledSource: renderedCode, currentLegendNumber: currentLegend }
+        return {
+            compiledSource: renderedCode,
+            currentLegendNumber: currentLegend
+        }
     }
 
 //
 // ─── LOADING RESOURCES ──────────────────────────────────────────────────────────
 //
 
-    export function completeHTML( code: string ) {
-        return `<link rel="stylesheet" href="legend.css">\n${ code }`;
+    export function completeHTML ( code: string ) {
+        return '<link rel="stylesheet" href="legend.css">\n' + code
     }
 
 // ────────────────────────────────────────────────────────────────────────────────
@@ -109,7 +115,7 @@
     /**
      * Compiles the legend part of the code as well as the markdown paragraphs
      */
-    function compileParagraph( paragraphCode: string ): paragraphTableRow {
+    function compileParagraph ( paragraphCode: string ): paragraphTableRow {
         // our result
         var result: paragraphTableRow = {
             paragraph: '',
@@ -119,33 +125,37 @@
         // compiling
         result.paragraph = paragraphCode.replace( legendGrammar , ( match: any ) => {
             // creating the id
-            let id = createUniqueId( );
+            let id = createUniqueId( )
+
             // adding the legend
-            let legendContent = <string> marked( match.substring( 1 , match.length - 1 ) );
+            let legendContent = <string> marked(
+                match.substring( 1 , match.length - 1 ) )
+
             // removing <p> ... </p>
-            legendContent = legendContent.substring( 3, legendContent.length - 5 );
+            legendContent = legendContent.substring( 3, legendContent.length - 5 )
+
             // adding it...
             result.legends.push(
-                 //`<div class="legend-bullet" id="${ id }">${ currentLegend } &bull; ${ legendContent }</div>`
-                 `<div class="legend-bullet">${ currentLegend } &bull; ${ legendContent }</div>`
-            );
+                 renderBulletin( id, currentLegend, legendContent )
+            )
 
             //returning the id
-            let insiderTextOrLink: string;
+            let insiderTextOrLink: string
             if ( !noLinking ) {
                 // insiderTextOrLink = `<a href="#${ id }">&dagger;${ currentLegend++ }</a>`;
-                insiderTextOrLink = `&dagger;${ currentLegend++ }`;
+                insiderTextOrLink = '&dagger;' + currentLegend++
             } else {
                 insiderTextOrLink = ( currentLegend++ ).toString( );
             }
-            return `<sup class="legend-sup">${ insiderTextOrLink }</sup>`;
-        });
+
+            return `<sup class="legend-sup">${ insiderTextOrLink }</sup>`
+        })
 
         // compiling markdown
-        result.paragraph = marked( result.paragraph );
+        result.paragraph = marked( result.paragraph )
 
         // done
-        return result;
+        return result
     }
 
 //
@@ -154,10 +164,12 @@
 
     function createUniqueId( ): string {
         while ( true ) {
-            let id = `legend${ Math.random( ).toString( 16 ).slice( 2 ) }`;
+            const id = 'legend' + Math.random( )
+                                    .toString( 16 )
+                                    .slice( 2 )
             if ( ids[ id ] === undefined ) {
-                ids[ id ] = true;
-                return id;
+                ids[ id ] = true
+                return id
             }
         }
     }
@@ -167,7 +179,7 @@
 //
 
     function getParagraphs( code: string ): string[ ] {
-        return code.split('\n\n');
+        return code.split( '\n\n' )
     }
 
 // ────────────────────────────────────────────────────────────────────────────────
@@ -190,11 +202,21 @@
      * Renders the **`paragraphTableRow[ ]`**
      */
     function renderParagraphTableRowArray( ): string {
-        var result = new Array<string> ( );
-        resultParagraphs.forEach( row => {
-            result.push( renderParagraph ( row ) );
-        });
-        return result.join('\n\n');
+        var result = new Array<string> ( )
+        for ( const row of resultParagraphs )
+            result.push( renderParagraph ( row ) )
+        return result.join( '\n\n' )
+    }
+
+//
+// ─── RENDER BULLETIN ────────────────────────────────────────────────────────────
+//
+
+    function renderBulletin ( id: string, currentLegend: number, legendContent: string ) {
+        return  `<div class="legend-bullet" id="${ id }">
+                    <div class="legend-bullet-number">${ currentLegend }</div>
+                    <div class="legend-bullet-content">${ legendContent }</div>
+                </div>`
     }
 
 //
@@ -202,12 +224,10 @@
 //
 
     function renderParagraph( row: paragraphTableRow ): string {
-        return (
-            '<div class="legend-section">' +
-                `<div class="legend-paragraph">${ row.paragraph }</div>` +
-                `<div class="legend-sidebar"><ul>${ row.legends.join('\n') }</ul></div>` +
-            '</div>'
-        );
+        return `<div class="legend-section">
+                    <div class="legend-paragraph">${ row.paragraph }</div>
+                    <div class="legend-sidebar"><ul>${ row.legends.join('\n') }</ul></div>
+                </div>`
     }
 
 // ────────────────────────────────────────────────────────────────────────────────
