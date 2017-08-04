@@ -35,7 +35,7 @@
 // ─── GLOBAL SETTINGS ────────────────────────────────────────────────────────────
 //
 
-    var currentLegendNumber = 1;
+    var currentLegendNumber = 0;
     var resetLegendAtPart = false;
     var legendNoLinking = false;
 
