@@ -7,8 +7,8 @@
 // ─── INCLUDES ───────────────────────────────────────────────────────────────────
 //
 
-    import legend = require('./legend');
-    import marked = require('marked');
+    import * as legend from './legend';
+    import * as marked from 'marked';
 
 //
 // ─── ENUMS ──────────────────────────────────────────────────────────────────────

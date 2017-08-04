@@ -9,44 +9,36 @@
 // ─── IMPORTS ────────────────────────────────────────────────────────────────────
 //
 
-    import pageman    = require('./pageman');
-    import ui         = require('./kary/ui');
-    import text       = require('./kary/text');
-    import chokidar   = require('chokidar');
-    import fs         = require('fs');
-    import path       = require('path');
-
+    import * as pageman     from './pageman'
+    import * as ui          from './kary/ui'
+    import * as text        from './kary/text'
+    import * as chokidar    from 'chokidar'
+    import * as fs          from 'fs'
+    import * as path        from 'path'
+    import * as colors      from 'colors'
 
 //
 // ─── CONSTS ─────────────────────────────────────────────────────────────────────
 //
 
     const fileFormat = '.pageman';
-
-    const commandNoLegendLinking = '--no-legend-linking';
+    const commandNoLegendLinking = '--no-legend-linking'
 
 //
 // ─── COMMAND LINE ARGS ──────────────────────────────────────────────────────────
 //
 
-    var legendNoLinking = false;
+    var legendNoLinking = false
 
 //
-// ─── BASE LANGUAGE EXTENSIONS ───────────────────────────────────────────────────
+// ─── CHECK IF ARRAY CONTAINS SOMETHING ──────────────────────────────────────────
 //
 
-    /**
-     * Adds a function to the Array to search over a specified
-     * content in the array te check if it exists.
-     */
-    Array.prototype[ 'contains' ] = obj => {
-        var index = this.length;
-        while ( index-- ) {
-            if ( this[ index ] === obj ) {
-                return true;
-            }
-        }
-        return false;
+    function checkIfArrayContains<T> ( array: T[ ], searchable: T ) {
+        for ( const element of array )
+            if ( element === searchable )
+                return true
+        return false
     }
 
 //
@@ -54,32 +46,32 @@
 //
 
     /** Where we start off */
-    function main ( ) {
+    function main () {
         // our arguments
-        let args = process.argv.slice( 2 );
+        let args = process.argv.slice( 2 )
 
         // hello world
-        ui.printTitle('Pageman');
+        ui.printTitle( 'Pageman' )
 
         // parsing options
-        if ( args['contains']( commandNoLegendLinking ) ) {
-            args = args.slice( args.indexOf( commandNoLegendLinking ) , 1 );
-            legendNoLinking = true;
+        if ( checkIfArrayContains( args, commandNoLegendLinking ) ) {
+            args = args.slice( args.indexOf( commandNoLegendLinking ), 1 )
+            legendNoLinking = true
         }
 
         // command switching...
         if ( args.length > 0 ) {
-            if ( args[ 0 ] === '-w' ) {
-                watchDirectory( );
+            if ( args[0] === '-w' ) {
+                watchDirectory()
             } else {
-                compileListOfFiles( args );
+                compileListOfFiles( args )
             }
         } else {
-            compileDirectory( );
+            compileDirectory( )
         }
     }
 
-    main( );
+    main( )
 
 //
 // ─── COMPILE DIRECTORY ──────────────────────────────────────────────────────────
@@ -89,9 +81,9 @@
      * Compiles every file within the directory and the sub directories....
      */
     function compileDirectory ( ) {
-        forEachFileInDirDo( process.cwd( ) , filepath => {
-            loadCompileAndStoreFile( filepath );
-        });
+        forEachFileInDirDo( process.cwd(), filePath => {
+            loadCompileAndStoreFile( filePath )
+        })
     }
 
 //
@@ -101,13 +93,13 @@
     /**
      * Watches every file in the directory and the sub directories....
      */
-    function watchDirectory ( ) {
-        ui.print('Pageman Watch Server: Running.');
-        let watcher = chokidar.watch( process.cwd( ) , {
+    function watchDirectory () {
+        ui.print( 'Pageman Watch Server: Running.' )
+        let watcher = chokidar.watch( process.cwd(), {
             ignored: /.*(\.git|node_modules|_site).*/gi
-        });
-        watcher.on( 'change', compileWatchFile );
-        watcher.on( 'add', path => watcher.add( path ) );
+        })
+        watcher.on( 'change', compileWatchFile )
+        watcher.on( 'add', path => watcher.add( path ) )
     }
 
 //
@@ -116,8 +108,8 @@
 
     function compileWatchFile ( address: string ) {
         if ( address.endsWith( fileFormat ) ) {
-            ui.print( `Change at ${ new Date( ).toUTCString( ).green }.` );
-            loadCompileAndStoreFile( address );
+            ui.print( `Change at ${ new Date( ).toUTCString( ).green }.` )
+            loadCompileAndStoreFile( address )
         }
     }
 
@@ -129,24 +121,24 @@
      * Does a certain task to all the files within a directory and it's sub directories...
      */
     function forEachFileInDirDo ( baseDir: string,
-                                  operation: ( filepath: string ) => any ) {
-        fs.readdir( baseDir , ( err , files ) => {
+        operation: ( filePath: string ) => any ) {
+        fs.readdir( baseDir, ( err, files ) => {
             if ( err ) {
-                ui.print( `Could not open directory "${ baseDir.underline }"`, false );
-                return;
+                ui.print( `Could not open directory "${ baseDir.underline }"`, false )
+                return
             } else {
                 files.forEach( address => {
-                    let filePath = path.join( baseDir , address );
+                    let filePath = path.join( baseDir, address )
                     if ( fs.statSync( filePath ).isDirectory( ) ) {
-                        forEachFileInDirDo( filePath , filePath => {
-                            operation( filePath );
-                        });
+                        forEachFileInDirDo( filePath, filePath => {
+                            operation( filePath )
+                        })
                     } else {
                         if ( address.endsWith( fileFormat ) ) {
-                            operation( filePath );
+                            operation( filePath )
                         }
                     }
-                });
+                })
             }
         })
     }
@@ -161,11 +153,11 @@
     function compileListOfFiles ( addresses: string[ ] ) {
         addresses.forEach( address => {
             if ( address.endsWith( fileFormat ) ) {
-                loadCompileAndStoreFile( address );
+                loadCompileAndStoreFile( address )
             } else {
-                ui.print( `Supplied files must be of type "${ fileFormat }".`, false );
+                ui.print( `Supplied files must be of type "${fileFormat}".`, false )
             }
-        });
+        })
     }
 
 //
@@ -178,37 +170,37 @@
      */
     function loadCompileAndStoreFile ( address: string ) {
         // do we have the file?
-        fs.exists( address , exists => {
+        fs.exists( address, exists => {
             if ( exists ) {
                 // opening the file
                 fs.readFile( address, 'utf8', ( err, data ) => {
 
                     // if could not open the file
                     if ( err ) {
-                        ui.print( 'Could not open the file.', false );
-                        return;
+                        ui.print( 'Could not open the file.', false )
+                        return
                     }
 
                     // could open the file
-                    let compiledSource = pageman.compile( data.toString( ) , {
+                    let compiledSource = pageman.compile( data.toString(), {
                         legendNoLinking: legendNoLinking
-                    });
+                    })
 
                     // now saving the file...
-                    fs.writeFile( getResultFileAddress( address ), 
-                                  compiledSource, err => {
-                        if ( err ) {
-                            ui.print( `Could not save result of "${ address.underline }".`, false );
-                        } else {
-                            ui.print( `"${ text.getFileName( address )}" successfully compiled.` );
-                        }
-                    });
-                    
-                });
+                    fs.writeFile( getResultFileAddress( address ),
+                        compiledSource, err => {
+                            if ( err ) {
+                                ui.print( `Could not save result of "${address.underline}".`, false )
+                            } else {
+                                ui.print( `"${text.getFileName( address )}" successfully compiled.` )
+                            }
+                        })
+
+                })
             } else {
-                ui.print( `File '${ address }' does not exists.`, false );
+                ui.print( `File '${ address }' does not exists.`, false )
             }
-        });
+        })
     }
 
 //
@@ -219,8 +211,8 @@
      * Generates the final HTML address based on the 'pm' file address.
      * **yourFile.pm** `-->`** /somewhere/yourFile.html **
      */
-    function getResultFileAddress( address: string ) {
-        return `${ address.substr( 0, address.length - fileFormat.length ) }.html`;
+    function getResultFileAddress ( address: string ) {
+        return `${address.substr( 0, address.length - fileFormat.length )}.html`
     }
 
 // ────────────────────────────────────────────────────────────────────────────────
