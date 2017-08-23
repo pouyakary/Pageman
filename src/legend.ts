@@ -53,7 +53,7 @@
 //
 
     /**
-     * The grammar fo the legend 
+     * The grammar fo the legend
      */
     const legendGrammar = /\^([^\^])+\^/gi
 
@@ -78,7 +78,7 @@
         for ( const paragraph of getParagraphs( code ) )
             resultParagraphs.push( compileParagraph( paragraph ) )
 
-        // render 
+        // render
         let renderedCode = renderParagraphTableRowArray( )
 
         // done
@@ -226,7 +226,7 @@
     function renderParagraph( row: paragraphTableRow ): string {
         return `<div class="legend-section">
                     <div class="legend-paragraph">${ row.paragraph }</div>
-                    <div class="legend-sidebar"><ul>${ row.legends.join('\n') }</ul></div>
+                    <div class="legend-sidebar">${ row.legends.join('\n') }</div>
                 </div>`
     }
 
