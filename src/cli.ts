@@ -192,7 +192,7 @@
                             if ( err )
                                 ui.print( `Could not save result of "${address.underline}".`, false )
                             else
-                                ui.print( `"${text.getFileName( address )}" successfully compiled.` )
+                                ui.print( address )
                         })
 
                 })
