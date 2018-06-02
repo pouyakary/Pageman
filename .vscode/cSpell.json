@@ -6,14 +6,16 @@
     "language": "en",
     // words - list of words to be always considered correct
     "words": [
-        "Pageman",
-        "templating",
-        "preprocess",
-        "pageman's",
-        "minimist",
-        "mdown",
         "chokidar",
-        "CONSTS"
+        "CONSTS",
+        "Kary",
+        "mdown",
+        "minimist",
+        "Pageman",
+        "pageman's",
+        "Pouya",
+        "preprocess",
+        "templating"
     ],
     // flagWords - list of words to be always considered incorrect
     // This is useful for offensive words and common spelling errors.

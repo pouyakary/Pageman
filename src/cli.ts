@@ -1,8 +1,7 @@
 #! /usr/bin/env node
 
 //
-// Pageman - HTML, Markdown and Legend mixer that Loves Jekyll...
-//    Copyright 2016 by Pouya Kary <k@karyfoundation.org>
+// Copyright 2016-present by Pouya Kary <pouya@kary.us>
 //
 
 //
@@ -21,14 +20,17 @@
 // ─── CONSTS ─────────────────────────────────────────────────────────────────────
 //
 
-    const fileFormat = '.pageman';
-    const commandNoLegendLinking = '--no-legend-linking'
+    const fileFormat =
+        '.pageman'
+    const commandNoLegendLinking =
+        '--no-legend-linking'
 
 //
 // ─── COMMAND LINE ARGS ──────────────────────────────────────────────────────────
 //
 
-    var legendNoLinking = false
+    var legendNoLinking =
+        false
 
 //
 // ─── CHECK IF ARRAY CONTAINS SOMETHING ──────────────────────────────────────────
@@ -60,15 +62,13 @@
         }
 
         // command switching...
-        if ( args.length > 0 ) {
-            if ( args[0] === '-w' ) {
-                watchDirectory()
-            } else {
+        if ( args.length > 0 )
+            if ( args[0] === '-w' )
+                watchDirectory( )
+            else
                 compileListOfFiles( args )
-            }
-        } else {
+        else
             compileDirectory( )
-        }
     }
 
     main( )
@@ -95,7 +95,7 @@
      */
     function watchDirectory () {
         ui.print( 'Pageman Watch Server: Running.' )
-        let watcher = chokidar.watch( process.cwd(), {
+        const watcher = chokidar.watch( process.cwd(), {
             ignored: /.*(\.git|node_modules|_site).*/gi
         })
         watcher.on( 'change', compileWatchFile )
@@ -128,16 +128,17 @@
                 return
             } else {
                 files.forEach( address => {
-                    let filePath = path.join( baseDir, address )
-                    if ( fs.statSync( filePath ).isDirectory( ) ) {
+                    const filePath =
+                        path.join( baseDir, address )
+
+                    if ( fs.statSync( filePath ).isDirectory( ) )
                         forEachFileInDirDo( filePath, filePath => {
                             operation( filePath )
                         })
-                    } else {
-                        if ( address.endsWith( fileFormat ) ) {
+                    else
+                        if ( address.endsWith( fileFormat ) )
                             operation( filePath )
-                        }
-                    }
+
                 })
             }
         })
@@ -152,11 +153,10 @@
      */
     function compileListOfFiles ( addresses: string[ ] ) {
         addresses.forEach( address => {
-            if ( address.endsWith( fileFormat ) ) {
+            if ( address.endsWith( fileFormat ) )
                 loadCompileAndStoreFile( address )
-            } else {
+            else
                 ui.print( `Supplied files must be of type "${fileFormat}".`, false )
-            }
         })
     }
 
@@ -189,11 +189,10 @@
                     // now saving the file...
                     fs.writeFile( getResultFileAddress( address ),
                         compiledSource, err => {
-                            if ( err ) {
+                            if ( err )
                                 ui.print( `Could not save result of "${address.underline}".`, false )
-                            } else {
+                            else
                                 ui.print( `"${text.getFileName( address )}" successfully compiled.` )
-                            }
                         })
 
                 })

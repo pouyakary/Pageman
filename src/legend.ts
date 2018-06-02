@@ -1,8 +1,8 @@
 
 //
-// Pageman - HTML, Markdown and Legend mixer that Loves Jekyll...
-//    Copyright 2016 by Pouya Kary <k@karyfoundation.org>
+// Copyright 2016-present by Pouya Kary <pouya@kary.us>
 //
+
 
 //
 // ──────────────────────────────────────────────── I ──────────
@@ -43,10 +43,14 @@
 // ─── GLOBAL STORAGE ─────────────────────────────────────────────────────────────
 //
 
-    var resultParagraphs = new Array<paragraphTableRow> ( )
-    var currentLegend: number = 1
-    var noLinking = false
-    var ids: legendIdTable = { }
+    var resultParagraphs =
+        new Array<paragraphTableRow> ( )
+    var currentLegend: number =
+        1
+    var noLinking =
+        false
+    var ids: legendIdTable =
+        { }
 
 //
 // ─── CONSTANTS ──────────────────────────────────────────────────────────────────
@@ -55,7 +59,8 @@
     /**
      * The grammar fo the legend
      */
-    const legendGrammar = /\^([^\^])+\^/gi
+    const legendGrammar =
+        /\^([^\^])+\^/gi
 
 //
 // ─── COMPILE ────────────────────────────────────────────────────────────────────
@@ -67,7 +72,8 @@
     export function compile ( code: string,
                            options: legendOptions ): legendCompiledResult {
         // init
-        resultParagraphs = new Array<paragraphTableRow> ( )
+        resultParagraphs =
+            new Array<paragraphTableRow> ( )
         if ( options.startingIndex != undefined )
             currentLegend = options.startingIndex
 
@@ -132,7 +138,8 @@
                 match.substring( 1 , match.length - 1 ) )
 
             // removing <p> ... </p>
-            legendContent = legendContent.substring( 3, legendContent.length - 5 )
+            legendContent =
+                legendContent.substring( 3, legendContent.length - 5 )
 
             // adding it...
             result.legends.push(
@@ -141,12 +148,12 @@
 
             //returning the id
             let insiderTextOrLink: string
-            if ( !noLinking ) {
+            if ( !noLinking )
                 // insiderTextOrLink = `<a href="#${ id }">&dagger;${ currentLegend++ }</a>`;
                 insiderTextOrLink = '&dagger;' + currentLegend++
-            } else {
-                insiderTextOrLink = ( currentLegend++ ).toString( );
-            }
+            else
+                insiderTextOrLink = ( currentLegend++ ).toString( )
+
 
             return `<sup class="legend-sup">${ insiderTextOrLink }</sup>`
         })
@@ -202,7 +209,8 @@
      * Renders the **`paragraphTableRow[ ]`**
      */
     function renderParagraphTableRowArray( ): string {
-        var result = new Array<string> ( )
+        const result =
+            new Array<string> ( )
         for ( const row of resultParagraphs )
             result.push( renderParagraph ( row ) )
         return result.join( '\n\n' )

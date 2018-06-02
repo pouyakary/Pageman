@@ -1,23 +1,22 @@
- 
+
 //
-// Kary Framework for NodeJS
-// Copyright 2016 Kary Foundation, Inc.
-//    Author: Pouya Kary <k@karyfoundation.org>
+// Copyright 2016-present by Pouya Kary <pouya@kary.us>
 //
+
 
 //
 // ─── IMPORTS ────────────────────────────────────────────────────────────────────
 //
 
-    import colors = require('colors');
-    import size   = require('window-size');
+    import colors = require('colors')
+    import size   = require('window-size')
 
 //
 // ─── PRINT ──────────────────────────────────────────────────────────────────────
 //
 
     export function print ( message: string, status: boolean = true ) {
-        console.log(` ${ status? colors.green('\u2713'): colors.red('\u2715') } ${ message }\n`);
+        console.log(` ${ status? colors.green('\u2713'): colors.red('\u2715') } ${ message }\n`)
     }
 
 //
@@ -25,18 +24,18 @@
 //
 
     export function printTitle ( title: string ) {
-        printHorizontalLine( );
+        printHorizontalLine( )
 
-        let spacings = '';
-        for ( let index = 0; index < Math.floor( ( size.width - title.length - 2 ) / 2 ); index++ ) {
-            spacings += '•';
-        }
-        spacings = spacings.rainbow;
+        let spacings = ''
+        for ( let index = 0; index < Math.floor( ( size.width - title.length - 2 ) / 2 ); index++ )
+            spacings += '•'
 
-        console.log( `${ spacings } ${ title } ${ spacings }` );
+        spacings = spacings.rainbow
 
-        printHorizontalLine( );
-        console.log('');
+        console.log( `${ spacings } ${ title } ${ spacings }` )
+
+        printHorizontalLine( )
+        console.log('')
     }
 
 //
@@ -44,11 +43,11 @@
 //
 
     function printHorizontalLine ( ) {
-        let line = '';
-        for ( let index = 0; index < size.width; index++ ) {
-            line += '\u2500';
-        }
-        console.log( line.cyan );
+        let line = ''
+        for ( let index = 0; index < size.width; index++ )
+            line += '\u2500'
+
+        console.log( line.cyan )
     }
 
 // ────────────────────────────────────────────────────────────────────────────────
