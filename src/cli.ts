@@ -10,11 +10,9 @@
 
     import * as pageman     from './pageman'
     import * as ui          from './kary/ui'
-    import * as text        from './kary/text'
     import * as chokidar    from 'chokidar'
     import * as fs          from 'fs'
     import * as path        from 'path'
-    import * as colors      from 'colors'
 
 //
 // ─── CONSTS ─────────────────────────────────────────────────────────────────────
@@ -24,6 +22,9 @@
         '.pageman'
     const commandNoLegendLinking =
         '--no-legend-linking'
+    const addressCheckerRegExp =
+        /^.*(\.git|node_modules|_site).*$/
+
 
 //
 // ─── COMMAND LINE ARGS ──────────────────────────────────────────────────────────
@@ -81,7 +82,7 @@
      * Compiles every file within the directory and the sub directories....
      */
     function compileDirectory ( ) {
-        forEachFileInDirDo( process.cwd(), filePath => {
+        forEachFileInDirDo( process.cwd( ), filePath => {
             loadCompileAndStoreFile( filePath )
         })
     }
@@ -96,7 +97,7 @@
     function watchDirectory () {
         ui.print( 'Pageman Watch Server: Running.' )
         const watcher = chokidar.watch( process.cwd(), {
-            ignored: /.*(\.git|node_modules|_site).*/gi
+            ignored: addressCheckerRegExp
         })
         watcher.on( 'change', compileWatchFile )
         watcher.on( 'add', path => watcher.add( path ) )
@@ -169,6 +170,9 @@
      * some file name but of type '.html'
      */
     function loadCompileAndStoreFile ( address: string ) {
+        if ( addressCheckerRegExp.test( address ) )
+            return;
+
         // do we have the file?
         fs.exists( address, exists => {
             if ( exists ) {
