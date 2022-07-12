@@ -1,10 +1,11 @@
 {
   "name": "pageman",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "Kary's Web Preprocessor to bring C-Style Comments for the Web, Legend Compilers and Language Mixing for the modern Static Website development",
   "bin": {
     "pageman": "bin/cli.js"
   },
+  "main": "./bin/pageman.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/karyfoundation/pageman"
